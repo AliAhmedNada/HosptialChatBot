@@ -51,7 +51,7 @@ bot.on('conversationUpdate', function (message) {
             if (identity.id === message.address.bot.id) {
                 bot.send(new builder.Message()
                     .address(message.address)
-                    .text("Thank you for contacting Soliman AL Fakeeh Hospital, Hi"));
+                    .text("Thank you for contacting Soliman AL Fakeeh Hospital, Hi there"));
             }
         });
     }
@@ -60,11 +60,11 @@ bot.on('conversationUpdate', function (message) {
 /***/
 bot.dialog('/', [
     function (session) {
-        builder.Prompts.choice(session, "Thank you for contacting Soliman AL Fakeeh Hospital, I can help you to:", "Book an Appointment | Change Appointment", { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, "I can help you to:", "Book an Appointment | Change Appointment", { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
         session.userData.choice = results.response;
-        builder.Prompts.text(session, "Sure, which department would you like to book an appointment at? (hh:mm:ss dd/mm/yyyy)");
+        builder.Prompts.text(session, "Sure, which department would you like to book an appointment at?");
     },
     function (session, results) {
         session.userData.department = results.response;
@@ -72,11 +72,11 @@ bot.dialog('/', [
 
     },
     function (session, results) {
-        session.userData.timepurposed = results.response;
+        session.dialogData.time = builder.EntityRecognizer.resolveTime([results.response]);
         builder.Prompts.choice(session, "Tomorrow, we have the below available time slots. Which one would be suitable for you?","10:00 AM|12:00 PM|11:00 AM|01:00 PM",{ listStyle: builder.ListStyle.button });
     },
         function (session, results) {
-        session.userData.timepurposed = results.response;
+        session.userData.ChoiceTime = results.response;
         builder.Prompts.text(session, "Okay, can I get your full name to complete your booking please?");
     },
         function (session, results) {
@@ -85,9 +85,8 @@ bot.dialog('/', [
     },
     function (session, results) {
         session.userData.UserPhoneNumber = results.response;
-        session.send("Got it... " + session.userData.UserName + 
-                    " " + session.userData.department  + 
-                    "  " + session.userData.timepurposed  + ".");
+        session.send("Great, your appointment will be " + session.dialogData.time + 
+                    " with doctor Dr. Mohamed AlJawad" + "I hope you get well soon & thank you for contacting Soliman AL Fakeeh Hospital.");
     }
 ]);
 
