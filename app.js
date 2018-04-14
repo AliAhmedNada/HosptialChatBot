@@ -51,7 +51,7 @@ bot.on('conversationUpdate', function (message) {
             if (identity.id === message.address.bot.id) {
                 bot.send(new builder.Message()
                     .address(message.address)
-                    .text("Thank you for contacting Soliman AL Fakeeh Hospital, I can help you to:<br>1. Book an appointment<br>2. Change an appointment"));
+                    .text("Thank you for contacting Soliman AL Fakeeh Hospital, Hi"));
             }
         });
     }
@@ -60,7 +60,7 @@ bot.on('conversationUpdate', function (message) {
 /***/
 bot.dialog('/', [
     function (session) {
-        builder.Prompts.text(session, "Hello... What's your name?");
+        builder.Prompts.choice(session, "Thank you for contacting Soliman AL Fakeeh Hospital, I can help you to:", "Book an Appointment | Change Appointment", { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
         session.userData.name = results.response;
@@ -77,3 +77,5 @@ bot.dialog('/', [
                     " years and use " + session.userData.language + ".");
     }
 ]);
+
+
