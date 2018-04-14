@@ -63,18 +63,31 @@ bot.dialog('/', [
         builder.Prompts.choice(session, "Thank you for contacting Soliman AL Fakeeh Hospital, I can help you to:", "Book an Appointment | Change Appointment", { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
-        session.userData.name = results.response;
-        builder.Prompts.number(session, "Hi " + results.response + ", How many years have you been coding?"); 
+        session.userData.choice = results.response;
+        builder.Prompts.text(session, "Sure, which department would you like to book an appointment at? (hh:mm:ss dd/mm/yyyy)");
     },
     function (session, results) {
-        session.userData.coding = results.response;
-        builder.Prompts.choice(session, "What language do you code Node using?", ["JavaScript", "CoffeeScript", "TypeScript"]);
+        session.userData.department = results.response;
+            builder.Prompts.time(session, "Okay, at what time / date would you like to book the appointment.");
+
     },
     function (session, results) {
-        session.userData.language = results.response.entity;
-        session.send("Got it... " + session.userData.name + 
-                    " you've been programming for " + session.userData.coding + 
-                    " years and use " + session.userData.language + ".");
+        session.userData.timepurposed = results.response;
+        builder.Prompts.choice(session, "Tomorrow, we have the below available time slots. Which one would be suitable for you?","10:00 AM|12:00 PM|11:00 AM|01:00 PM",{ listStyle: builder.ListStyle.button });
+    },
+        function (session, results) {
+        session.userData.timepurposed = results.response;
+        builder.Prompts.text(session, "Okay, can I get your full name to complete your booking please?");
+    },
+        function (session, results) {
+        session.userData.UserName = results.response;
+        builder.Prompts.text(session, "And, your phone number please?");
+    },
+    function (session, results) {
+        session.userData.UserPhoneNumber = results.response;
+        session.send("Got it... " + session.userData.UserName + 
+                    " " + session.userData.department  + 
+                    "  " + session.userData.timepurposed  + ".");
     }
 ]);
 
