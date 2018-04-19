@@ -88,8 +88,8 @@ bot.dialog('/', [
 
     },
     function (session, results) {
-        session.dialogData.time = builder.EntityRecognizer.resolveTime([results.response]).toLocaleDateString('en-US', {timeZone: 'Asia/Riyadh'});
-        builder.Prompts.choice(session, session.dialogData.time+" ,we have the below available time slots. Which one would be suitable for you?","10:00 AM|12:00 PM|11:00 AM|01:00 PM",{ listStyle: builder.ListStyle.button });
+        session.dialogData.date = builder.EntityRecognizer.resolveTime([results.response]).toLocaleDateString('en-US', {timeZone: 'Asia/Riyadh'});
+        builder.Prompts.choice(session, session.dialogData.date+" ,we have the below available time slots. Which one would be suitable for you?","10:00 AM|12:00 PM|11:00 AM|01:00 PM",{ listStyle: builder.ListStyle.button });
     },
         function (session, results) {
         session.userData.ChoiceTime = results.response.entity;
@@ -101,7 +101,7 @@ bot.dialog('/', [
     },
     function (session, results) {
         session.userData.UserPhoneNumber = results.response;
-        session.send("Great "+session.userData.UserName+ ", your appointment will be " + session.dialogData.time + 
+        session.send("Great "+session.userData.UserName+ ", your appointment will be " + session.dialogData.date + 
                     " with doctor Dr. Mohamed AlJawad " +session.userData.ChoiceTime +" I hope you get well soon & thank you for contacting Soliman AL Fakeeh Hospital.");
     }
 ]);
