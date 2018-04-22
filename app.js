@@ -122,6 +122,7 @@ session.save();
         session.userData.UserPhoneNumber = results.response;
         session.send("Great "+session.userData.UserName+ ", your appointment will be " + session.dialogData.date + 
                     " with doctor Dr. Mohamed AlJawad " +session.userData.ChoiceTime +" I hope you get well soon & thank you for contacting Soliman AL Fakeeh Hospital.");
+
 session.save();
     }
     ]);
