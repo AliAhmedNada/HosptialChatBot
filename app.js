@@ -12,7 +12,11 @@ var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
+/*variable to catch message*/
+var userchatconversation;
 
+
+/*Cosmos Database keys and APIS*/
 var documentDbOptions = {
     host: 'https://hosptialchatbot.documents.azure.com:443/', 
     masterKey: 'yJHHAHwjPUqTlKy7zixyTEMq3AiZ1Ul5PGe6WX2s81rn9tF5xc3jNhgIBlc7mJ4bfk3apedFMh86vRndrSs9AA==', 
@@ -51,7 +55,28 @@ var bot = new builder.UniversalBot(connector);
 //bot.set('storage', tableStorage);
 bot.set('storage', cosmosStorage);
 
-/*Greeting message*/
+
+
+/***************************************************** */
+
+const logUserConversation = (event) => {
+    console.log('message: ' + event.text + ', user: ' + event.address.user.name);
+    userchatconversation+='message: ' + event.text + ', user: ' + event.address.user.name;
+};
+
+// Middleware for logging
+bot.use({
+    receive: function (event, next) {
+        logUserConversation(event);
+        next();
+    },
+    send: function (event, next) {
+        logUserConversation(event);
+        next();
+    }
+});
+
+/************************************* */
 /*bot.on('conversationUpdate', function (message) {
     // Say hello
     var reply = new builder.Message()
@@ -122,9 +147,9 @@ session.save();
         session.userData.UserPhoneNumber = results.response;
         session.send("Great "+session.userData.UserName+ ", your appointment will be " + session.dialogData.date + 
                     " with doctor Dr. Mohamed AlJawad " +session.userData.ChoiceTime +" I hope you get well soon & thank you for contacting Soliman AL Fakeeh Hospital.");
-
+session.userData.chatconversation = userchatconversation;
 session.save();
     }
     ]);
 
-
+//////////////////////////////////////////////////////////////////////////
