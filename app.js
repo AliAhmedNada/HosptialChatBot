@@ -1,6 +1,6 @@
 /* global addAttachment */
 /*-----------------------------------------------------------------------------
-A simple echo bot for the Microsoft Bot Framework. 
+This is a Hosptial Chat Bot with DataBase Implementation .
 -----------------------------------------------------------------------------*/
 
 var restify = require('restify');
